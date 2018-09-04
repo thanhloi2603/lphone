@@ -28,6 +28,7 @@ int init_args(larg_t *arg) {
         CFG_STR("ringFile", "_undef_", CFGF_NONE),
         CFG_INT("port", 5060, CFGF_NONE),
         CFG_STR("transport", "UDP", CFGF_NONE),
+        CFG_STR_LIST("codecs", "{}", CFGF_NONE),
         CFG_END()
     };
     cfg_t *cfg;
@@ -45,8 +46,11 @@ int init_args(larg_t *arg) {
     arg->port = cfg_getint(cfg, "port");
     strcpy(arg->user_agent_string, cfg_getstr(cfg, "user_agent_string"));
     strcpy(arg->transport, cfg_getstr(cfg, "transport"));
+
+    unsigned i;
+    for (i = 0; i < cfg_size(cfg, "codecs"); i++)
+        strcpy(arg->codecs[i], cfg_getnstr(cfg, "codecs", i));
+
     cfg_free(cfg);
     return 0;
 }
-
-

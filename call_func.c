@@ -1,5 +1,23 @@
 #include "call_func.h"
+#include "lutils.h"
 #define THIS_FILE "call_func.c"
+
+/* Codec constants */
+struct codec laudio_codecs[] =
+{
+/*    { 0,  "PCMU", 8000, 64000, 20, "PCMU/8000" },
+    { 3,  "GSM",  8000, 13200, 20, "GSM/8000" },
+    { 8,  "PCMA", 8000, 64000, 20, "PCMA/8000" },
+*/
+    { 4,  "G723", 8000, 6400,  30, "G723/8000" },
+    { 9,  "G722", 16000, 64000, 20, "G722/16000" },
+    { 18, "G729", 8000, 8000,  20, "G729/8000" },
+    { 97, "speex/8000", 8000, 16000,  20, "speex/8000" },
+    { 98, "speex/16000", 16000, 16000,  20, "speex/16000" },
+    { 99, "speex/32000", 32000, 32000,  20, "speex/32000" },
+    { 104, "iLBC", 8000, 8000,  20, "iLBC/8000" }
+};
+
 /* ------------------------------------------ Call functions implementation--------------------------------------------*/
 
 /* initiate INVITE for calling a destination */
@@ -140,10 +158,23 @@ void media_all_stop() {
 
         /* disconnect media player slot to remote slot */
         pjsua_conf_disconnect(laudio_config.media_player_slot, laudio_config.remote_slot);
+    } else {
+        /* disconnect input device to remote slot */
+        pjsua_conf_disconnect(0, laudio_config.remote_slot);
     }
     /* disconnect remote slot to output device */
     pjsua_conf_disconnect(laudio_config.remote_slot, 0);
     ring_stop();
+}
+
+void codec_setting() {
+    unsigned i;
+    for (i = 0; i < PJ_ARRAY_SIZE(laudio_codecs); i++) {
+        /* disable all codecs not listed */
+        pj_str_t codec_id = pj_str(laudio_codecs[i].identification);
+        if (pjsua_codec_set_priority(&codec_id, PJMEDIA_CODEC_PRIO_DISABLED) == PJ_SUCCESS)
+            PJ_LOG(3, (THIS_FILE, "Codec %s disabled", laudio_codecs[i].identification));
+    }
 }
 
 /* Callback called by the library when call's state has changed */
@@ -196,6 +227,7 @@ void on_call_media_state(pjsua_call_id call_id)
 
         // remote stream to local sound device
         pjsua_conf_connect(laudio_config.remote_slot, 0);
+        ring_stop();
     }
 }
 

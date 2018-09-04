@@ -36,9 +36,10 @@ int main(int argc, char *argv[])
     if (status != PJ_SUCCESS)
         error_exit("Unable to create pjsua!\n", status);
 
-    /* then init pjsua */
+    /* user agent configuration */
     pjsua_config ua_cfg;
     pjsua_config_default(&ua_cfg);
+    ua_cfg.max_calls = 1;
     ua_cfg.use_srtp = PJMEDIA_SRTP_DISABLED;
     ua_cfg.use_timer = PJSUA_SIP_TIMER_INACTIVE;
     ua_cfg.user_agent = pj_str(mParams->user_agent_string);
@@ -49,6 +50,7 @@ int main(int argc, char *argv[])
     ua_cfg.cb.on_incoming_call = &on_incoming_call;
     ua_cfg.cb.on_call_state = &on_call_state;
 
+    /* logging configuration */
     pjsua_logging_config log_cfg;
     pjsua_logging_config_default(&log_cfg);
     log_cfg.msg_logging = PJ_TRUE;
@@ -65,10 +67,11 @@ int main(int argc, char *argv[])
     pjsua_transport_config_default(&transport_cfg);
     transport_cfg.port = mParams->port;
 
+    /* transport type to use */
+    enum pjsip_transport_type_e transport = PJSIP_TRANSPORT_UDP;
     if (!strcasecmp(mParams->transport, "tcp"))
-        status = pjsua_transport_create(PJSIP_TRANSPORT_TCP, &transport_cfg, &transport_id);
-    else 
-        status = pjsua_transport_create(PJSIP_TRANSPORT_UDP, &transport_cfg, &transport_id);
+        transport = PJSIP_TRANSPORT_TCP;
+    status = pjsua_transport_create(transport, &transport_cfg, &transport_id);
 
     if (status != PJ_SUCCESS)
         error_exit("Unable to create transport!\n", status);
@@ -118,6 +121,8 @@ int main(int argc, char *argv[])
         
         /* create audio player and slot */
         init_laudio_config(mParams->ringFile, mParams->outputFile);
+
+        codec_setting();
     }
 
     /* wait for commands */
@@ -158,7 +163,11 @@ int main(int argc, char *argv[])
             }
             status = do_call(acc_id, params[1], mParams->proxy, NULL, NULL, NULL, &call_id);
         } else if (!strcmp(params[0], "transfer")) {
-            do_transfer(call_id, params[1], mParams->proxy, NULL);
+            if (!pjsua_call_is_active(call_id)) {
+                PJ_LOG(3, (THIS_FILE, "There's no active call!"));
+            }else{
+                do_transfer(call_id, params[1], mParams->proxy, NULL);
+            }
         } else if (!strcmp(params[0], "register")) {
             pjsua_acc_set_registration(acc_id, PJ_TRUE);
         } else if (!strcmp(params[0], "unregister")) {

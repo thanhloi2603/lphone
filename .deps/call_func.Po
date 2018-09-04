@@ -232,7 +232,13 @@ call_func.o: call_func.c /usr/include/stdc-predef.h call_func.h \
  /usr/local/include/pj/hash.h /usr/local/include/pj/ip_helper.h \
  /usr/local/include/pj/pool_buf.h /usr/local/include/pj/rand.h \
  /usr/local/include/pj/rbtree.h /usr/local/include/pj/sock_select.h \
- /usr/local/include/pj/unicode.h
+ /usr/local/include/pj/unicode.h lutils.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd.h /usr/include/confuse.h
 
 /usr/include/stdc-predef.h:
 
@@ -807,3 +813,21 @@ call_func.h:
 /usr/local/include/pj/sock_select.h:
 
 /usr/local/include/pj/unicode.h:
+
+lutils.h:
+
+/usr/include/unistd.h:
+
+/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
+
+/usr/include/x86_64-linux-gnu/bits/environments.h:
+
+/usr/include/x86_64-linux-gnu/bits/confname.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_core.h:
+
+/usr/include/x86_64-linux-gnu/bits/unistd.h:
+
+/usr/include/confuse.h:

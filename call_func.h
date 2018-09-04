@@ -15,6 +15,20 @@ typedef struct laudio_config_s laudio_config_t;
 
 extern laudio_config_t laudio_config;
 
+/* Codec descriptor: */
+struct codec
+{
+    unsigned    pt;
+    char*   name;
+    unsigned    clock_rate;
+    unsigned    bit_rate;
+    unsigned    ptime;
+    char*   identification;
+};
+
+/* Codec constants */
+extern struct codec laudio_codecs[];
+
 /* ------------------------------------------ Call functions --------------------------------------------*/
 pj_status_t do_call(pjsua_acc_id acc_id, char *dst_uri, char *proxy, const pjsua_call_setting *opt, 
     void *user_data, const pjsua_msg_data *msg_data, pjsua_call_id *p_call_id);
@@ -34,3 +48,4 @@ void ringback_start();
 void ring_start();
 void ring_stop();
 void media_all_stop();
+void codec_setting();
