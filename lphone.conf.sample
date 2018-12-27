@@ -1,14 +1,10 @@
 # User name (mandatory), used for authentication as well
-# username = sip4085311
 username = siplphone
 
 # password (mandatory)
-# password = JtXSmtrAdUn9DU
 password = 123abc
 # SIP server to send calls to by default (mandatory). Just domain, no `sip:` format
-# proxy = sip1.hoiio.com
 proxy = 192.168.1.229
-# proxy = 192.168.1.235
 
 # Registrar server to register against, no REGISTER if this param is missing
 server = 192.168.1.229

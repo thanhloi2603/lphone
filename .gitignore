@@ -1,3 +1,4 @@
 *.o
 lphone
 autom4te.cache/requests
+lphone.conf
