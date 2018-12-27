@@ -1,0 +1,1 @@
+#define MAX_ALLOWED_CODEC 5

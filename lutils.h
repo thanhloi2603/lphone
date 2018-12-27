@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <confuse.h>
-#define MAX_ALLOWED_CODEC 5
+#include "const.h"
 struct larg_s
 {
     /* Account info */

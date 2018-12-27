@@ -122,7 +122,14 @@ int main(int argc, char *argv[])
         /* create audio player and slot */
         init_laudio_config(mParams->ringFile, mParams->outputFile);
 
-        codec_setting(mParams->codecs);
+        /* codec setting */
+        {
+            pjsua_codec_info supported_codecs[MAX_ALLOWED_CODEC];
+            int cdcount;
+            pjsua_enum_codecs(supported_codecs, &cdcount);
+
+            codec_setting(cdcount, supported_codecs, mParams->codecs);
+        }
     }
 
     /* wait for commands */

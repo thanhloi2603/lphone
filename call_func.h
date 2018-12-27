@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <pjsua-lib/pjsua.h>
+#include "const.h"
+
 struct laudio_config_s {
     int ringback_slot;                          // for ringing purpose
     pjsua_player_id ring_player;                // player for ringing
@@ -26,9 +28,6 @@ struct codec
     char*   identification;
 };
 
-/* Codec constants */
-extern struct codec laudio_codecs[];
-
 /* ------------------------------------------ Call functions --------------------------------------------*/
 pj_status_t do_call(pjsua_acc_id acc_id, char *dst_uri, char *proxy, const pjsua_call_setting *opt, 
     void *user_data, const pjsua_msg_data *msg_data, pjsua_call_id *p_call_id);
@@ -48,4 +47,4 @@ void ringback_start();
 void ring_start();
 void ring_stop();
 void media_all_stop();
-void codec_setting();
+void codec_setting(int cdcount, pjsua_codec_info supported_codecs[], char allow_codecs[MAX_ALLOWED_CODEC][20]);

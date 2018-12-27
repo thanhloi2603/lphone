@@ -2,21 +2,6 @@
 #include "lutils.h"
 #define THIS_FILE "call_func.c"
 
-/* Codec constants */
-struct codec laudio_codecs[] =
-{
-    { 0,  "PCMU", 8000, 64000, 20, "PCMU/8000" },
-    { 3,  "GSM",  8000, 13200, 20, "GSM/8000" },
-    { 8,  "PCMA", 8000, 64000, 20, "PCMA/8000" },
-    { 4,  "G723", 8000, 6400,  30, "G723/8000" },
-    { 9,  "G722", 16000, 64000, 20, "G722/16000" },
-    { 18, "G729", 8000, 8000,  20, "G729/8000" },
-    { 97, "speex/8000", 8000, 16000,  20, "speex/8000" },
-    { 98, "speex/16000", 16000, 16000,  20, "speex/16000" },
-    { 99, "speex/32000", 32000, 32000,  20, "speex/32000" },
-    { 104, "iLBC", 8000, 8000,  20, "iLBC/8000" }
-};
-
 /* ------------------------------------------ Call functions implementation--------------------------------------------*/
 
 /* initiate INVITE for calling a destination */
@@ -166,10 +151,15 @@ void media_all_stop() {
     ring_stop();
 }
 
-void codec_setting(char allow_codecs[MAX_ALLOWED_CODEC][20]) {
-    for (int i = 0; i < PJ_ARRAY_SIZE(laudio_codecs); i++) {
+void codec_setting(int cdcount, pjsua_codec_info supported_codecs[MAX_ALLOWED_CODEC], char allow_codecs[MAX_ALLOWED_CODEC][20]) {
+    for (int i = 0; i < cdcount; i++)
+    {
+        PJ_LOG(3, (THIS_FILE, "Codec %s suppoted", supported_codecs[i].codec_id));
+    }
+
+    for (int i = 0; i < cdcount; i++) {
         /* disable all codecs not listed */
-        pj_str_t codec_id = pj_str(laudio_codecs[i].identification);
+        pj_str_t codec_id = supported_codecs[i].codec_id;
         int allow = 0;
         for (int j = 0; j < MAX_ALLOWED_CODEC; j++)
         {
@@ -182,7 +172,7 @@ void codec_setting(char allow_codecs[MAX_ALLOWED_CODEC][20]) {
 
         if (allow == 0){
             if (pjsua_codec_set_priority(&codec_id, PJMEDIA_CODEC_PRIO_DISABLED) == PJ_SUCCESS)
-                PJ_LOG(3, (THIS_FILE, "Codec %s disabled", laudio_codecs[i].identification));
+                PJ_LOG(3, (THIS_FILE, "Codec %s disabled", codec_id));
         }
     }
 }
