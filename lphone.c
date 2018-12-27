@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
         /* create audio player and slot */
         init_laudio_config(mParams->ringFile, mParams->outputFile);
 
-        codec_setting();
+        codec_setting(mParams->codecs);
     }
 
     /* wait for commands */

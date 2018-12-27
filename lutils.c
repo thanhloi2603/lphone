@@ -47,8 +47,11 @@ int init_args(larg_t *arg) {
     strcpy(arg->user_agent_string, cfg_getstr(cfg, "user_agent_string"));
     strcpy(arg->transport, cfg_getstr(cfg, "transport"));
 
-    unsigned i;
-    for (i = 0; i < cfg_size(cfg, "codecs"); i++)
+    int codec_config_size = cfg_size(cfg, "codecs");
+    if (codec_config_size > MAX_ALLOWED_CODEC)
+        codec_config_size = MAX_ALLOWED_CODEC;
+
+    for (int i = 0; i < codec_config_size; i++)
         strcpy(arg->codecs[i], cfg_getnstr(cfg, "codecs", i));
 
     cfg_free(cfg);

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <confuse.h>
+#define MAX_ALLOWED_CODEC 5
 struct larg_s
 {
     /* Account info */
@@ -15,7 +16,7 @@ struct larg_s
     char outputFile[100];                   // file to play instead of microphone
     char ringFile[100];                     // ring file to use
     char transport[10];                     // transport method to use, accept 'udp' or 'tcp', case insensitive
-    char codecs[10][20];
+    char codecs[MAX_ALLOWED_CODEC][20];
 };
 
 typedef struct larg_s larg_t;

@@ -5,10 +5,9 @@
 /* Codec constants */
 struct codec laudio_codecs[] =
 {
-/*    { 0,  "PCMU", 8000, 64000, 20, "PCMU/8000" },
+    { 0,  "PCMU", 8000, 64000, 20, "PCMU/8000" },
     { 3,  "GSM",  8000, 13200, 20, "GSM/8000" },
     { 8,  "PCMA", 8000, 64000, 20, "PCMA/8000" },
-*/
     { 4,  "G723", 8000, 6400,  30, "G723/8000" },
     { 9,  "G722", 16000, 64000, 20, "G722/16000" },
     { 18, "G729", 8000, 8000,  20, "G729/8000" },
@@ -167,13 +166,24 @@ void media_all_stop() {
     ring_stop();
 }
 
-void codec_setting() {
-    unsigned i;
-    for (i = 0; i < PJ_ARRAY_SIZE(laudio_codecs); i++) {
+void codec_setting(char allow_codecs[MAX_ALLOWED_CODEC][20]) {
+    for (int i = 0; i < PJ_ARRAY_SIZE(laudio_codecs); i++) {
         /* disable all codecs not listed */
         pj_str_t codec_id = pj_str(laudio_codecs[i].identification);
-        if (pjsua_codec_set_priority(&codec_id, PJMEDIA_CODEC_PRIO_DISABLED) == PJ_SUCCESS)
-            PJ_LOG(3, (THIS_FILE, "Codec %s disabled", laudio_codecs[i].identification));
+        int allow = 0;
+        for (int j = 0; j < MAX_ALLOWED_CODEC; j++)
+        {
+            if (allow_codecs[j][0] != '\0' && !strcasecmp(allow_codecs[j], codec_id.ptr)){
+                allow = 1;
+                PJ_LOG(3, (THIS_FILE, "Codec %s allowed", allow_codecs[j]));
+                break;
+            }
+        }
+
+        if (allow == 0){
+            if (pjsua_codec_set_priority(&codec_id, PJMEDIA_CODEC_PRIO_DISABLED) == PJ_SUCCESS)
+                PJ_LOG(3, (THIS_FILE, "Codec %s disabled", laudio_codecs[i].identification));
+        }
     }
 }
 
