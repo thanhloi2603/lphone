@@ -9,8 +9,8 @@ struct larg_s
     /* Account info */
     char username[30];                      // authusername as well
     char password[30];                      // account password
-    char server[100];                       // registrar to register against, no REGISTER if this is not set
-    char proxy[100];                        // where to send calls to by default
+    char server[60];                        // registrar to register against, no REGISTER if this is not set
+    char proxy[60];                         // where to send calls to by default
     char user_agent_string[100];            // user agent header
     int port;                               // port to bind to, default is 5060, set to 0 to bind to any available port
     char outputFile[100];                   // file to play instead of microphone
