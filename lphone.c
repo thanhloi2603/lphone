@@ -121,16 +121,14 @@ int main(int argc, char *argv[])
         
         /* create audio player and slot */
         init_laudio_config(mParams->ringFile, mParams->outputFile);
-
-        /* codec setting */
-        {
-            pjsua_codec_info supported_codecs[MAX_ALLOWED_CODEC];
-            int cdcount;
-            pjsua_enum_codecs(supported_codecs, &cdcount);
-
-            codec_setting(cdcount, supported_codecs, mParams->codecs);
-        }
     }
+
+    /* codec setting */
+    pjsua_codec_info supported_codecs[32];
+    int cdcount = PJ_ARRAY_SIZE(supported_codecs);
+    pjsua_enum_codecs(supported_codecs, &cdcount);
+
+    codec_setting(cdcount, supported_codecs, mParams->codecs);
 
     /* wait for commands */
     char *input, *params[2], *str;
@@ -163,6 +161,10 @@ int main(int argc, char *argv[])
             pjsua_call_hangup_all();
         } else if (!strcmp(params[0], "help")) {
             show_help();
+        } else if (!strcmp(params[0], "codecs")) {
+            for (int i = 0; i < cdcount; i++) {
+                PJ_LOG(3, (THIS_FILE, "Codec %s suppoted", supported_codecs[i].codec_id));
+            }
         } else if (!strcmp(params[0], "call")) {
             if (strcmp(mParams->outputFile, "_undef_")) {
                 PJ_LOG(3, (THIS_FILE, "Will play sound file instead of voice from user's micro"));

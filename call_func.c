@@ -151,12 +151,7 @@ void media_all_stop() {
     ring_stop();
 }
 
-void codec_setting(int cdcount, pjsua_codec_info supported_codecs[MAX_ALLOWED_CODEC], char allow_codecs[MAX_ALLOWED_CODEC][20]) {
-    for (int i = 0; i < cdcount; i++)
-    {
-        PJ_LOG(3, (THIS_FILE, "Codec %s suppoted", supported_codecs[i].codec_id));
-    }
-
+void codec_setting(int cdcount, pjsua_codec_info supported_codecs[], char allow_codecs[MAX_ALLOWED_CODEC][20]) {
     for (int i = 0; i < cdcount; i++) {
         /* disable all codecs not listed */
         pj_str_t codec_id = supported_codecs[i].codec_id;

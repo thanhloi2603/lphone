@@ -2,7 +2,7 @@
 #define THIS_FILE "lutils.c"
 
 void show_help() {
-    printf("hangup                 -- hangup all calls\n");
+    printf("hangup/hup             -- hangup all calls\n");
     printf("quit                   -- quit program\n");
     printf("help                   -- show this help\n");
     printf("register               -- register against the registrar server\n");
@@ -12,6 +12,7 @@ void show_help() {
     printf("unhold                 -- unhold the call\n");
     printf("dtmf digits            -- send dtmf digits, only avaialbe when call is active\n");
     printf("transfer <sip_uri>     -- transfer this call to a target uri\n");
+    printf("codecs                 -- list all supported codecs\n");
     fflush(stdout);
 }
 
