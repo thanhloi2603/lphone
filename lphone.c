@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
         acc_cfg.lock_codec = 0;
 
         acc_cfg.use_rfc5626 = PJ_FALSE;
-        acc_cfg.register_on_acc_add = PJ_FALSE;
+        acc_cfg.register_on_acc_add = PJ_TRUE;
 
         /* no REGISTER stuff when registrar is not specified */
         if (strcmp(mParams->server, "_undef_")) {
@@ -187,6 +187,13 @@ int main(int argc, char *argv[])
             pjsua_call_reinvite(call_id, PJSUA_CALL_UNHOLD, NULL);
         } else if (!strcmp(params[0], "message")) {
             send_message(call_id, params[1]);
+        } else if (!strcmp(params[0], "answer")) {
+            pjsua_call_answer(call_id, 200, NULL, NULL);
+        } else if (!strncmp(params[0], "reject-", 7)) {
+            char *code = (char*)malloc(sizeof(char) * 3);
+            code = params[0] + 7;
+            int int_code = atoi(code);
+            pjsua_call_answer(call_id, int_code, NULL, NULL);
         } else {
             PJ_LOG(3, (THIS_FILE, "Invalid command. Enter <help> for instruction"));
         }

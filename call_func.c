@@ -239,6 +239,6 @@ void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id,
     ringback_start();
 
     PJ_LOG(3,(THIS_FILE, "Incoming call from %.*s!!", (int)ci.remote_info.slen, ci.remote_info.ptr));
-    /* Automatically answer incoming calls with 200/OK */
-    pjsua_call_answer(call_id, 200, NULL, NULL);
+
+    PJ_LOG(3,(THIS_FILE, "--------------------- Enter answer/reject-<code> respectively ---------------------"));
 }
