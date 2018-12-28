@@ -3,8 +3,6 @@
 #include "lutils.h"
 
 #define THIS_FILE "lphone.c"
-#define MAX_INPUT_SIZE 40
-#define MAX_URI_SIZE 100
 
 /* only one account during runtime, process 1 call at a time as well */
 pjsua_call_id call_id;

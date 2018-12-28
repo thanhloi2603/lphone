@@ -236,21 +236,9 @@ void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id,
     PJ_UNUSED_ARG(rdata);
 
     pjsua_call_get_info(call_id, &ci);
+    ringback_start();
 
-    PJ_LOG(3,(THIS_FILE, "Incoming call from %.*s!!",
-             (int)ci.remote_info.slen,
-             ci.remote_info.ptr));
-
-    pjsua_msg_data msg_data;
-    pjsip_generic_string_hdr x_hoiio_txnid;
-    pj_str_t hname = pj_str("X-Hoiio-TxnId");
-    pj_str_t hvalue = pj_str("TXNID-Test-655");
-
-    /* Add x_hoiio_txnid header */
-    pjsua_msg_data_init(&msg_data);
-    pjsip_generic_string_hdr_init2(&x_hoiio_txnid, &hname, &hvalue);
-    pj_list_push_back(&msg_data.hdr_list, &x_hoiio_txnid);
-
+    PJ_LOG(3,(THIS_FILE, "Incoming call from %.*s!!", (int)ci.remote_info.slen, ci.remote_info.ptr));
     /* Automatically answer incoming calls with 200/OK */
-    pjsua_call_answer(call_id, 200, NULL, &msg_data);
+    pjsua_call_answer(call_id, 200, NULL, NULL);
 }
