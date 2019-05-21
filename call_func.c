@@ -240,5 +240,5 @@ void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id,
 
     PJ_LOG(3,(THIS_FILE, "Incoming call from %.*s!!", (int)ci.remote_info.slen, ci.remote_info.ptr));
 
-    PJ_LOG(3,(THIS_FILE, "--------------------- Enter answer/reject-<code> respectively ---------------------"));
+    PJ_LOG(3,(THIS_FILE, "--------------------- Enter answer/reject-<code>/redirect-<target> respectively ---------------------"));
 }
