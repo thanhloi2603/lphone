@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
 
         // params[0] should be the command
         // incase of transfering and calling, params[1] should be the uri of the transfer target
-        if (!strcmp(params[0], "quit")) {
+        if (!strcmp(params[0], "quit") || !strcmp(params[0], "shutdown")) {
             break;
         } else if (!strcmp(params[0], "hangup") || !strcmp(params[0], "hup")) {
             pjsua_call_hangup_all();

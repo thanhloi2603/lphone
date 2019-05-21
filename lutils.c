@@ -3,7 +3,7 @@
 
 void show_help() {
     printf("hangup/hup             -- hangup all calls\n");
-    printf("quit                   -- quit program\n");
+    printf("quit/shutdown          -- quit program\n");
     printf("help                   -- show this help\n");
     printf("register               -- register against the registrar server\n");
     printf("unregister             -- flush the registration\n");
