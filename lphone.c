@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 
         /* no REGISTER stuff when registrar is not specified */
         if (strcmp(mParams->server, "_undef_")) {
-            sprintf(registrar, "sip:%s", mParams->server);
+            sprintf(registrar, "sip:%s;transport=%s", mParams->server, mParams->transport);
             acc_cfg.reg_timeout = 3600;
             acc_cfg.reg_uri = pj_str(registrar);
         }
