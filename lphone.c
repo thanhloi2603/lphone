@@ -194,6 +194,21 @@ int main(int argc, char *argv[])
             code = params[0] + 7;
             int int_code = atoi(code);
             pjsua_call_answer(call_id, int_code, NULL, NULL);
+        } else if (!strncmp(params[0], "redirect-", 9)){
+            /* redirect-65123456789 will reject the call with 302 and fill the contact with 65123456789 as the redirected destination */
+            char *target = params[0] + 9;
+            printf("target: %s", target);
+            pjsua_msg_data msg_data;
+            pjsua_msg_data_init(&msg_data);
+            pjsip_generic_string_hdr x_hoiio_txnid;
+
+            pj_str_t hname = pj_str("Contact");
+            char *cvalue = (char*)malloc(sizeof(char)*30);
+            sprintf(cvalue, "sip:%s@192.168.1.44", target);
+            pj_str_t hvalue = pj_str(cvalue);
+            pjsip_generic_string_hdr_init2(&x_hoiio_txnid, &hname, &hvalue);
+            pj_list_push_back(&msg_data.hdr_list, &x_hoiio_txnid);
+            pjsua_call_answer(call_id, 302, NULL, &msg_data);
         } else {
             PJ_LOG(3, (THIS_FILE, "Invalid command. Enter <help> for instruction"));
         }
