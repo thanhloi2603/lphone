@@ -3,3 +3,5 @@ lphone
 autom4te.cache/requests
 lphone.conf
 .deps/*.Po
+sftp-config.json
+autom4te.cache/*
