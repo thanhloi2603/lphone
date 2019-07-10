@@ -8,7 +8,7 @@ struct larg_s
 {
     /* Account info */
     char username[30];                      // authusername as well
-    char password[30];                      // account password
+    char password[60];                      // account password
     char server[60];                        // registrar to register against, no REGISTER if this is not set
     char proxy[60];                         // where to send calls to by default
     char user_agent_string[100];            // user agent header
