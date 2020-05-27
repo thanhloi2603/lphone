@@ -92,6 +92,8 @@ int main(int argc, char *argv[])
 
         acc_cfg.use_rfc5626 = PJ_FALSE;
         acc_cfg.register_on_acc_add = PJ_TRUE;
+        acc_cfg.reg_retry_interval = 60;
+        acc_cfg.allow_contact_rewrite = PJ_FALSE;
 
         /* no REGISTER stuff when registrar is not specified */
         if (strcmp(mParams->server, "_undef_")) {

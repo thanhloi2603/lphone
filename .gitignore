@@ -5,3 +5,5 @@ lphone.conf
 .deps/*.Po
 sftp-config.json
 autom4te.cache/*
+config.status
+.gitignore
