@@ -171,6 +171,26 @@ int main(int argc, char *argv[])
                 // pjsua_set_null_snd_dev();
             }
             status = do_call(acc_id, params[1], mParams->proxy, NULL, NULL, NULL, &call_id);
+        } else if (!strcmp(params[0], "callr")) {
+            // call with Replaces header for replacing an existing call.
+            if (strcmp(mParams->outputFile, "_undef_")) {
+                PJ_LOG(3, (THIS_FILE, "Will play sound file instead of voice from user's micro"));
+                // pjsua_set_null_snd_dev();
+            }
+            pjsua_msg_data msg_data;
+            pjsua_msg_data_init(&msg_data);
+            pjsip_generic_string_hdr x_replaces;
+
+            pj_str_t hname = pj_str("Replaces");
+            char *cvalue = (char*)malloc(sizeof(char)*100);
+            sprintf(cvalue, "%s;from-tag=%s;to-tag=%s", params[1], params[2], params[3]);
+            pj_str_t hvalue = pj_str(cvalue);
+            pjsip_generic_string_hdr_init2(&x_replaces, &hname, &hvalue);
+            pj_list_push_back(&msg_data.hdr_list, &x_replaces);
+            status = do_call(acc_id, params[1], mParams->proxy, NULL, NULL, &msg_data, &call_id);
+            pjsua_call_set_hold(call_id, NULL);
+            pjsua_call_reinvite(call_id, PJSUA_CALL_UNHOLD, NULL);
+
         } else if (!strcmp(params[0], "transfer")) {
             if (!pjsua_call_is_active(call_id)) {
                 PJ_LOG(3, (THIS_FILE, "There's no active call!"));
