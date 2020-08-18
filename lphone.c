@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
     codec_setting(cdcount, supported_codecs, mParams->codecs);
 
     /* wait for commands */
-    char *input, *params[2], *str;
+    char *input, *params[3], *str;
     for (;;) {
         input = (char *)malloc(MAX_INPUT_SIZE * sizeof(char));
 
