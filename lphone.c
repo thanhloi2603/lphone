@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
     codec_setting(cdcount, supported_codecs, mParams->codecs);
 
     /* wait for commands */
-    char *input, *params[3], *str;
+    char *input, *params[4], *str;
     for (;;) {
         input = (char *)malloc(MAX_INPUT_SIZE * sizeof(char));
 
@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
 
             pj_str_t hname = pj_str("Replaces");
             char *cvalue = (char*)malloc(sizeof(char)*100);
-            sprintf(cvalue, "%s;from-tag=%s;to-tag=%s", params[1], params[2], params[3]);
+            sprintf(cvalue, "%s;from-tag=%s;to-tag=%s", params[2], params[3], params[4]);
             pj_str_t hvalue = pj_str(cvalue);
             pjsip_generic_string_hdr_init2(&x_replaces, &hname, &hvalue);
             pj_list_push_back(&msg_data.hdr_list, &x_replaces);
