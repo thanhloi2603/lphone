@@ -236,6 +236,7 @@ void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id,
     PJ_UNUSED_ARG(rdata);
 
     pjsua_call_get_info(call_id, &ci);
+    pjsua_call_answer(call_id, 180, NULL, NULL);
     ringback_start();
 
     PJ_LOG(3,(THIS_FILE, "Incoming call from %.*s!!", (int)ci.remote_info.slen, ci.remote_info.ptr));
