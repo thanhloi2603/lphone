@@ -207,6 +207,22 @@ int main(int argc, char *argv[])
             pjsua_call_set_hold(call_id, NULL);
         } else if (!strcmp(params[0], "unhold")) {
             pjsua_call_reinvite(call_id, PJSUA_CALL_UNHOLD, NULL);
+        } else if (!strcmp(params[0], "reinit")) {
+            pjsua_ip_change_param param;
+            param.restart_listener = PJ_FALSE;
+
+            pjsua_handle_ip_change(&param);
+
+        } else if (!strcmp(params[0], "update")) {
+            pjsua_transport_id new_transport_id;
+            status = pjsua_transport_create(transport, &transport_cfg, &new_transport_id);
+            if (status != PJ_SUCCESS)
+                error_exit("Unable to create transport!\n", status);
+
+            /* set transport MUST be done after adding the account */
+            pjsua_acc_set_transport(acc_id, new_transport_id);
+            pjsua_transport_close(transport_id, PJ_FALSE);
+            pjsua_call_update(call_id, PJSUA_CALL_UPDATE_CONTACT + PJSUA_CALL_NO_SDP_OFFER + PJSUA_CALL_UPDATE_VIA, NULL);
         } else if (!strcmp(params[0], "message")) {
             send_message(call_id, params[1]);
         } else if (!strcmp(params[0], "answer")) {
