@@ -4,14 +4,24 @@
 #include "const.h"
 
 struct laudio_config_s {
-    int ringback_slot;                          // for ringing purpose
+    pjsua_conf_port_id ringback_slot;           // for ringing purpose
     pjsua_player_id ring_player;                // player for ringing
 
-    int media_player_slot;                      // for playing media to other endpoint
+    pjsua_conf_port_id media_player_slot;       // for playing media to other endpoint
     pjsua_player_id media_player;               // player for media
 
-    int remote_slot;                            // the other end media slot
-    int user_slot;                              // from user's speaker
+    pjsua_conf_port_id remote_slot;             // the other end media slot
+    pjsua_conf_port_id user_slot;               // from user's speaker, to user's sound device, default to 0.
+
+    /* There are 2 scenarios for an established call
+        1. user-speech
+        - local sound device       <- remote - connect(remote_slot, user_slot)
+        - local microphone device  -> remote - connect(user_slot, remote_slot)
+
+        2. auto-media voice
+        - local sound device       <- remote - connect(remote_slot, user_slot)
+        - local preconfigured file -> remote - connect(media_player_slot, remote_slot)
+    */
 };
 typedef struct laudio_config_s laudio_config_t;
 

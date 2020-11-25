@@ -122,7 +122,7 @@ void init_laudio_config(char *ring_file, char *media_file) {
 
 /* play ring when receive 180 Ringing */
 void ringback_start() {
-    pjsua_conf_connect(laudio_config.ringback_slot, 0);
+    pjsua_conf_connect(laudio_config.ringback_slot, laudio_config.user_slot);
 }
 
 /* stop ring */
@@ -131,7 +131,7 @@ void ring_stop() {
     pjsua_player_set_pos(laudio_config.ring_player, 0);
 
     /* disconnect ring slot to output device */
-    pjsua_conf_disconnect(laudio_config.ringback_slot, 0);
+    pjsua_conf_disconnect(laudio_config.ringback_slot, laudio_config.user_slot);
 }
 
 /* release all media */
@@ -144,10 +144,10 @@ void media_all_stop() {
         pjsua_conf_disconnect(laudio_config.media_player_slot, laudio_config.remote_slot);
     } else {
         /* disconnect input device to remote slot */
-        pjsua_conf_disconnect(0, laudio_config.remote_slot);
+        pjsua_conf_disconnect(laudio_config.user_slot, laudio_config.remote_slot);
     }
     /* disconnect remote slot to output device */
-    pjsua_conf_disconnect(laudio_config.remote_slot, 0);
+    pjsua_conf_disconnect(laudio_config.remote_slot, laudio_config.user_slot);
     ring_stop();
 }
 
@@ -217,11 +217,11 @@ void on_call_media_state(pjsua_call_id call_id)
             pjsua_conf_connect(laudio_config.media_player_slot, laudio_config.remote_slot);
         } else {
             // play from local microphone
-            pjsua_conf_connect(0, laudio_config.remote_slot);
+            pjsua_conf_connect(laudio_config.user_slot, laudio_config.remote_slot);
         }
 
         // remote stream to local sound device
-        pjsua_conf_connect(laudio_config.remote_slot, 0);
+        pjsua_conf_connect(laudio_config.remote_slot, laudio_config.user_slot);
         ring_stop();
     }
 }
